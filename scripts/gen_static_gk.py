@@ -1,0 +1,652 @@
+import json
+import os
+
+static_dir = os.path.join("public", "data", "static-gk")
+os.makedirs(static_dir, exist_ok=True)
+
+# 1. Countries, Capitals & Currencies
+countries_data = {
+    "title": "Global Countries, Capitals, and Currencies Directory",
+    "total": 52,
+    "last_updated": "2026-09-13",
+    "records": [
+        {"country": "India", "capital": "New Delhi", "currency": "Indian Rupee", "code": "INR", "continent": "Asia", "notes": "Host of G20 in 2023, founding member of BRICS & SAARC"},
+        {"country": "Japan", "capital": "Tokyo", "currency": "Yen", "code": "JPY", "continent": "Asia", "notes": "G7 member, bilateral swap arrangement with RBI"},
+        {"country": "United States", "capital": "Washington, D.C.", "currency": "US Dollar", "code": "USD", "continent": "North America", "notes": "World's primary global reserve currency"},
+        {"country": "United Kingdom", "capital": "London", "currency": "Pound Sterling", "code": "GBP", "continent": "Europe", "notes": "City of London financial hub, Bank of England"},
+        {"country": "China", "capital": "Beijing", "currency": "Renminbi (Yuan)", "code": "CNY", "continent": "Asia", "notes": "Part of IMF's SDR currency basket since 2016"},
+        {"country": "Russia", "capital": "Moscow", "currency": "Russian Ruble", "code": "RUB", "continent": "Europe/Asia", "notes": "BRICS member, Rupee-Ruble bilateral trade arrangement"},
+        {"country": "France", "capital": "Paris", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "HQ of OECD, UNESCO, and FATF"},
+        {"country": "Germany", "capital": "Berlin", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "Largest economy in EU, European Central Bank in Frankfurt"},
+        {"country": "Brazil", "capital": "Brasilia", "currency": "Brazilian Real", "code": "BRL", "continent": "South America", "notes": "Founding BRICS member, G20 Presidency 2024"},
+        {"country": "South Africa", "capital": "Pretoria (Exec) / Cape Town (Leg) / Bloemfontein (Jud)", "currency": "South African Rand", "code": "ZAR", "continent": "Africa", "notes": "Joined BRICS in 2010, G20 Presidency 2025"},
+        {"country": "Saudi Arabia", "capital": "Riyadh", "currency": "Saudi Riyal", "code": "SAR", "continent": "Asia", "notes": "OPEC powerhouse, invited to BRICS+"},
+        {"country": "United Arab Emirates", "capital": "Abu Dhabi", "currency": "UAE Dirham", "code": "AED", "continent": "Asia", "notes": "Joined BRICS 2024, CEPA trade agreement with India"},
+        {"country": "Australia", "capital": "Canberra", "currency": "Australian Dollar", "code": "AUD", "continent": "Oceania", "notes": "Member of QUAD and Commonwealth"},
+        {"country": "Canada", "capital": "Ottawa", "currency": "Canadian Dollar", "code": "CAD", "continent": "North America", "notes": "G7 member"},
+        {"country": "Switzerland", "capital": "Bern", "currency": "Swiss Franc", "code": "CHF", "continent": "Europe", "notes": "Safe-haven currency, HQ of BIS in Basel & WEF in Cologny"},
+        {"country": "Singapore", "capital": "Singapore", "currency": "Singapore Dollar", "code": "SGD", "continent": "Asia", "notes": "Top foreign direct investment (FDI) equity source for India"},
+        {"country": "South Korea", "capital": "Seoul", "currency": "South Korean Won", "code": "KRW", "continent": "Asia", "notes": "CEPA partner with India"},
+        {"country": "Indonesia", "capital": "Nusantara (new) / Jakarta", "currency": "Indonesian Rupiah", "code": "IDR", "continent": "Asia", "notes": "ASEAN largest economy, G20 2022 President"},
+        {"country": "Bangladesh", "capital": "Dhaka", "currency": "Taka", "code": "BDT", "continent": "Asia", "notes": "SAARC & BIMSTEC member, border trade in INR"},
+        {"country": "Sri Lanka", "capital": "Sri Jayawardenepura Kotte (Admin) / Colombo (Com)", "currency": "Sri Lankan Rupee", "code": "LKR", "continent": "Asia", "notes": "BIMSTEC & SAARC, recipient of Indian currency swap lines"},
+        {"country": "Nepal", "capital": "Kathmandu", "currency": "Nepalese Rupee", "code": "NPR", "continent": "Asia", "notes": "Pegged to Indian Rupee, SAARC Secretariat host"},
+        {"country": "Bhutan", "capital": "Thimphu", "currency": "Ngultrum", "code": "BTN", "continent": "Asia", "notes": "Pegged 1:1 with Indian Rupee, BIMSTEC member"},
+        {"country": "Maldives", "capital": "Male", "currency": "Maldivian Rufiyaa", "code": "MVR", "continent": "Asia", "notes": "Indian Ocean archipelago, RBI currency swap partner"},
+        {"country": "Myanmar", "capital": "Naypyidaw", "currency": "Kyat", "code": "MMK", "continent": "Asia", "notes": "BIMSTEC and ASEAN gateway to Southeast Asia"},
+        {"country": "Thailand", "capital": "Bangkok", "currency": "Thai Baht", "code": "THB", "continent": "Asia", "notes": "BIMSTEC member, UN-ESCAP headquarters"},
+        {"country": "Malaysia", "capital": "Kuala Lumpur", "currency": "Malaysian Ringgit", "code": "MYR", "continent": "Asia", "notes": "ASEAN member, bilateral INR settlement enabled"},
+        {"country": "Vietnam", "capital": "Hanoi", "currency": "Vietnamese Dong", "code": "VND", "continent": "Asia", "notes": "Fastest growing Southeast Asian manufacturing exporter"},
+        {"country": "Philippines", "capital": "Manila", "currency": "Philippine Peso", "code": "PHP", "continent": "Asia", "notes": "Headquarters of Asian Development Bank (ADB)"},
+        {"country": "Iran", "capital": "Tehran", "currency": "Iranian Rial", "code": "IRR", "continent": "Asia", "notes": "Chabahar port agreement partner with India, BRICS+ member"},
+        {"country": "Israel", "capital": "Jerusalem", "currency": "New Israeli Shekel", "code": "ILS", "continent": "Asia", "notes": "I2U2 grouping member (India, Israel, UAE, USA)"},
+        {"country": "Turkey", "capital": "Ankara", "currency": "Turkish Lira", "code": "TRY", "continent": "Europe/Asia", "notes": "G20 member straddling Bosphorus Strait"},
+        {"country": "Egypt", "capital": "Cairo", "currency": "Egyptian Pound", "code": "EGP", "continent": "Africa", "notes": "Suez Canal custodian, joined BRICS 2024"},
+        {"country": "Kenya", "capital": "Nairobi", "currency": "Kenyan Shilling", "code": "KES", "continent": "Africa", "notes": "HQ of United Nations Environment Programme (UNEP)"},
+        {"country": "Nigeria", "capital": "Abuja", "currency": "Nigerian Naira", "code": "NGN", "continent": "Africa", "notes": "Most populous African nation, major crude oil supplier"},
+        {"country": "Argentina", "capital": "Buenos Aires", "currency": "Argentine Peso", "code": "ARS", "continent": "South America", "notes": "Part of Lithium Triangle along with Chile & Bolivia"},
+        {"country": "Chile", "capital": "Santiago", "currency": "Chilean Peso", "code": "CLP", "continent": "South America", "notes": "World's largest copper producer, Lithium Triangle"},
+        {"country": "Mexico", "capital": "Mexico City", "currency": "Mexican Peso", "code": "MXN", "continent": "North America", "notes": "G20 member, USMCA trade bloc"},
+        {"country": "Italy", "capital": "Rome", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "HQ of FAO, WFP, and IFAD in Rome"},
+        {"country": "Spain", "capital": "Madrid", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "HQ of UN World Tourism Organization (UN-Tourism)"},
+        {"country": "Netherlands", "capital": "Amsterdam (Admin: The Hague)", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "The Hague hosts International Court of Justice (ICJ)"},
+        {"country": "Belgium", "capital": "Brussels", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "HQ of European Union (EU) and NATO"},
+        {"country": "Austria", "capital": "Vienna", "currency": "Euro", "code": "EUR", "continent": "Europe", "notes": "HQ of OPEC, IAEA, and UNODC"},
+        {"country": "Sweden", "capital": "Stockholm", "currency": "Swedish Krona", "code": "SEK", "continent": "Europe", "notes": "Home of Nobel Prizes (except Peace Prize)"},
+        {"country": "Norway", "capital": "Oslo", "currency": "Norwegian Krone", "code": "NOK", "continent": "Europe", "notes": "Nobel Peace Prize presented in Oslo"},
+        {"country": "Denmark", "capital": "Copenhagen", "currency": "Danish Krone", "code": "DKK", "continent": "Europe", "notes": "Nordic nation, consistently high in Global Happiness Index"},
+        {"country": "Poland", "capital": "Warsaw", "currency": "Polish Zloty", "code": "PLN", "continent": "Europe", "notes": "Key Central European economy"},
+        {"country": "Uzbekistan", "capital": "Tashkent", "currency": "Uzbekistani Som", "code": "UZS", "continent": "Asia", "notes": "SCO member, Central Asian strategic partner"},
+        {"country": "Kazakhstan", "capital": "Astana", "currency": "Kazakhstani Tenge", "code": "KZT", "continent": "Asia", "notes": "Largest uranium supplier to India, SCO member"},
+        {"country": "Mauritius", "capital": "Port Louis", "currency": "Mauritian Rupee", "code": "MUR", "continent": "Africa", "notes": "Key foreign investment routing destination, DTAA treaty"},
+        {"country": "Oman", "capital": "Muscat", "currency": "Omani Rial", "code": "OMR", "continent": "Asia", "notes": "Gulf strategic ally, Duqm port access agreement"},
+        {"country": "Qatar", "capital": "Doha", "currency": "Qatari Riyal", "code": "QAR", "continent": "Asia", "notes": "India's largest Liquefied Natural Gas (LNG) supplier"},
+        {"country": "Ethiopia", "capital": "Addis Ababa", "currency": "Ethiopian Birr", "code": "ETB", "continent": "Africa", "notes": "Joined BRICS 2024, HQ of African Union (AU)"}
+    ]
+}
+
+with open(os.path.join(static_dir, "countries-capitals-currencies.json"), "w", encoding="utf-8") as f:
+    json.dump(countries_data, f, indent=2, ensure_ascii=False)
+
+# 2. Indian States & Union Territories
+states_data = {
+    "title": "Comprehensive Directory of Indian States and Union Territories",
+    "total_states": 28,
+    "total_uts": 8,
+    "last_updated": "2026-09-13",
+    "records": [
+        {
+            "name": "Andhra Pradesh",
+            "type": "State",
+            "capital": "Amaravati",
+            "chief_minister": "N. Chandrababu Naidu",
+            "governor": "S. Abdul Nazeer",
+            "high_court": "Andhra Pradesh High Court (Amaravati)",
+            "state_animal": "Blackbuck",
+            "state_bird": "Rose-ringed Parakeet",
+            "folk_dances": ["Kuchipudi (Classical)", "Vilasini Natyam", "Bhamakalpam", "Dhimsa"],
+            "festivals": ["Ugadi", "Sankranti", "Flamingo Festival (Pulicat Lake)"],
+            "national_parks": ["Sri Venkateswara National Park", "Papikonda National Park"],
+            "ramsar_sites": ["Kolleru Lake"],
+            "key_facts": "First state formed on linguistic basis in 1953. Second longest coastline in India (974 km)."
+        },
+        {
+            "name": "Arunachal Pradesh",
+            "type": "State",
+            "capital": "Itanagar",
+            "chief_minister": "Pema Khandu",
+            "governor": "Lt. Gen. Kaiwalya Trivikram Parnaik",
+            "high_court": "Gauhati High Court (Itanagar Bench)",
+            "state_animal": "Gayal (Mithun)",
+            "state_bird": "Great Hornbill",
+            "folk_dances": ["Bardo Chham", "Wancho Dance", "Buiya"],
+            "festivals": ["Losar", "Torgya (Tawang)", "Mopin", "Solung"],
+            "national_parks": ["Namdapha National Park", "Mouling National Park"],
+            "ramsar_sites": [],
+            "key_facts": "Land of Dawn-lit Mountains. Namdapha is only park hosting 4 big cats (tiger, leopard, snow leopard, clouded leopard)."
+        },
+        {
+            "name": "Assam",
+            "type": "State",
+            "capital": "Dispur",
+            "chief_minister": "Himanta Biswa Sarma",
+            "governor": "Lakshman Prasad Acharya",
+            "high_court": "Gauhati High Court",
+            "state_animal": "One-horned Rhinoceros",
+            "state_bird": "White-winged Wood Duck",
+            "folk_dances": ["Bihu", "Sattriya (Classical)", "Bagurumba", "Bhor Tal"],
+            "festivals": ["Bhogali Bihu", "Rongali Bihu", "Ambubachi Mela (Kamakhya)"],
+            "national_parks": ["Kaziranga National Park", "Manas National Park", "Dibru-Saikhowa", "Nameri", "Orang", "Raimona", "Dihing Patkai"],
+            "ramsar_sites": ["Deepor Beel"],
+            "key_facts": "7 National Parks (third highest in India). Majuli is the world's largest inhabited river island (Brahmaputra river)."
+        },
+        {
+            "name": "Bihar",
+            "type": "State",
+            "capital": "Patna",
+            "chief_minister": "Nitish Kumar",
+            "governor": "Rajendra Arlekar",
+            "high_court": "Patna High Court",
+            "state_animal": "Gaur (Mithun/Bull)",
+            "state_bird": "House Sparrow",
+            "folk_dances": ["Jat-Jatin", "Bidesia", "Jhumari", "Kajari"],
+            "festivals": ["Chhath Puja", "Sama Chakeva", "Sonepur Cattle Fair"],
+            "national_parks": ["Valmiki National Park"],
+            "ramsar_sites": ["Kanwar Lake (Kabartal Wetland)", "Nagi Bird Sanctuary", "Nakti Bird Sanctuary"],
+            "key_facts": "Valmiki is the only National Park and Tiger Reserve in Bihar. Nalanda Mahavihara is a UNESCO World Heritage site."
+        },
+        {
+            "name": "Chhattisgarh",
+            "type": "State",
+            "capital": "Raipur (Nava Raipur)",
+            "chief_minister": "Vishnu Deo Sai",
+            "governor": "Ramen Deka",
+            "high_court": "Chhattisgarh High Court (Bilaspur)",
+            "state_animal": "Wild Water Buffalo (Van Bhainsa)",
+            "state_bird": "Bastar Hill Myna",
+            "folk_dances": ["Panthi", "Raut Nacha", "Karma", "Pandwani"],
+            "festivals": ["Bastar Dussehra", "Hareli", "Madai"],
+            "national_parks": ["Guru Ghasidas (Sanjay) National Park", "Indravati (Kutru) National Park", "Kanger Valley National Park"],
+            "ramsar_sites": [],
+            "key_facts": "Known as Rice Bowl of Central India. Famous for Chitrakote Falls (Niagara of India) on Indravati river."
+        },
+        {
+            "name": "Goa",
+            "type": "State",
+            "capital": "Panaji",
+            "chief_minister": "Pramod Sawant",
+            "governor": "P. S. Sreedharan Pillai",
+            "high_court": "Bombay High Court (Goa Bench)",
+            "state_animal": "Gaur",
+            "state_bird": "Flame-throated Bulbul",
+            "folk_dances": ["Fugdi", "Dhalo", "Dekhni", "Kunbi"],
+            "festivals": ["Goa Carnival", "Shigmo Festival", "Feast of St. Francis Xavier"],
+            "national_parks": ["Mollem National Park (Bhagwan Mahavir Wildlife Sanctuary)"],
+            "ramsar_sites": ["Nanda Lake"],
+            "key_facts": "Smallest state by area. Dudhsagar Falls on Mandovi river is one of India's tallest waterfalls."
+        },
+        {
+            "name": "Gujarat",
+            "type": "State",
+            "capital": "Gandhinagar",
+            "chief_minister": "Bhupendrabhai Patel",
+            "governor": "Acharya Devvrat",
+            "high_court": "Gujarat High Court (Ahmedabad)",
+            "state_animal": "Asiatic Lion",
+            "state_bird": "Greater Flamingo",
+            "folk_dances": ["Garba", "Dandiya Raas", "Bhavai", "Tippani"],
+            "festivals": ["Rann Utsav", "Uttarayan (International Kite Festival)", "Navratri"],
+            "national_parks": ["Gir National Park", "Blackbuck National Park (Velavadar)", "Marine National Park (Gulf of Kutch)", "Vansda National Park"],
+            "ramsar_sites": ["Nalsarovar Bird Sanctuary", "Thol Lake", "Wadhvana Wetland", "Khijadia Bird Sanctuary"],
+            "key_facts": "Longest coastline in India (approx 1,600 km). Sole natural sanctuary of Asiatic Lions (Gir). GIFT City is India's first operational IFSC."
+        },
+        {
+            "name": "Haryana",
+            "type": "State",
+            "capital": "Chandigarh",
+            "chief_minister": "Nayab Singh Saini",
+            "governor": "Bandaru Dattatreya",
+            "high_court": "Punjab and Haryana High Court (Chandigarh)",
+            "state_animal": "Blackbuck",
+            "state_bird": "Black Francolin",
+            "folk_dances": ["Dhamal", "Ghoomar", "Phag", "Loor", "Gugga"],
+            "festivals": ["Surajkund International Crafts Mela", "Gita Mahotsav (Kurukshetra)", "Baisakhi"],
+            "national_parks": ["Sultanpur National Park", "Kalesar National Park"],
+            "ramsar_sites": ["Sultanpur National Park", "Bhindawas Wildlife Sanctuary"],
+            "key_facts": "Surrounded on three sides by Delhi. Hub of automobile manufacturing (Maruti Suzuki at Manesar/Gurugram)."
+        },
+        {
+            "name": "Himachal Pradesh",
+            "type": "State",
+            "capital": "Shimla (Summer) / Dharamshala (Winter)",
+            "chief_minister": "Sukhvinder Singh Sukhu",
+            "governor": "Shiv Pratap Shukla",
+            "high_court": "Himachal Pradesh High Court (Shimla)",
+            "state_animal": "Snow Leopard",
+            "state_bird": "Western Tragopan",
+            "folk_dances": ["Nati", "Dangi", "Chham Dance"],
+            "festivals": ["Kullu Dussehra", "Minjar Fair", "Halda"],
+            "national_parks": ["Great Himalayan National Park (UNESCO WHS)", "Pin Valley National Park", "Inderkilla", "Khirganga", "Simbalbara"],
+            "ramsar_sites": ["Pong Dam Lake", "Chandertal Wetland", "Renuka Lake (Smallest Ramsar site in India)"],
+            "key_facts": "Renuka Lake in Sirmaur is the smallest Ramsar wetland in India. Great Himalayan NP is a UNESCO Natural World Heritage site."
+        },
+        {
+            "name": "Karnataka",
+            "type": "State",
+            "capital": "Bengaluru",
+            "chief_minister": "Siddaramaiah",
+            "governor": "Thawar Chand Gehlot",
+            "high_court": "Karnataka High Court (Bengaluru)",
+            "state_animal": "Asian Elephant",
+            "state_bird": "Indian Roller",
+            "folk_dances": ["Yakshagana", "Dollu Kunitha", "Kamsale", "Veeragase"],
+            "festivals": ["Mysuru Dasara", "Kambala (Buffalo race)", "Karaga", "Hampi Utsav"],
+            "national_parks": ["Bandipur National Park", "Nagarhole (Kabini) NP", "Anshi (Kali) NP", "Kudremukh NP", "Bannerghatta NP"],
+            "ramsar_sites": ["Ranganathittu Bird Sanctuary", "Aghanashini Estuary", "Magadi Kere Conservation Reserve", "Ankasamudra Bird Conservation Reserve"],
+            "key_facts": "Bengaluru is the 'Silicon Valley of India'. Second highest tiger population in India. Hampi and Pattadakal are UNESCO World Heritage Sites."
+        },
+        {
+            "name": "Kerala",
+            "type": "State",
+            "capital": "Thiruvananthapuram",
+            "chief_minister": "Pinarayi Vijayan",
+            "governor": "Arif Mohammed Khan",
+            "high_court": "Kerala High Court (Kochi)",
+            "state_animal": "Indian Elephant",
+            "state_bird": "Great Hornbill",
+            "folk_dances": ["Kathakali (Classical)", "Mohiniyattam (Classical)", "Theyyam", "Chakyar Koothu", "Thiruvathirakali"],
+            "festivals": ["Onam", "Vishu", "Thrissur Pooram", "Nehru Trophy Boat Race (Punnamada Lake)"],
+            "national_parks": ["Periyar National Park", "Silent Valley National Park", "Eravikulam National Park", "Anamudi Shola", "Mathikettan Shola", "Pambadum Shola"],
+            "ramsar_sites": ["Vembanad-Kol Wetland (Longest lake in India)", "Ashtamudi Wetland", "Sasthamkotta Lake"],
+            "key_facts": "Anamudi (2,695 m) in Kerala is the highest peak in South India / Western Ghats. Eravikulam NP protects the endangered Nilgiri Tahr."
+        },
+        {
+            "name": "Madhya Pradesh",
+            "type": "State",
+            "capital": "Bhopal",
+            "chief_minister": "Mohan Yadav",
+            "governor": "Mangubhai C. Patel",
+            "high_court": "Madhya Pradesh High Court (Jabalpur)",
+            "state_animal": "Barasingha (Swamp Deer)",
+            "state_bird": "Indian Paradise Flycatcher (Dudhraj)",
+            "folk_dances": ["Matki", "Jawari", "Aada", "Khada Nach"],
+            "festivals": ["Khajuraho Dance Festival", "Tansen Samaroh (Gwalior)", "Lokrang"],
+            "national_parks": ["Kanha National Park", "Bandhavgarh NP", "Panna NP", "Pench NP", "Satpura NP", "Kuno National Park", "Madhav NP", "Sanjay NP", "Van Vihar", "Dinosaur Fossils NP", "Fossil NP"],
+            "ramsar_sites": ["Bhoj Wetland", "Sakhya Sagar", "Sirpur Wetland", "Yashwant Sagar"],
+            "key_facts": "'Tiger State of India' (785 tigers) and 'Leopard State'. Kuno NP is the home of reintroduced African and Namibian cheetahs (Project Cheetah)."
+        },
+        {
+            "name": "Maharashtra",
+            "type": "State",
+            "capital": "Mumbai (Summer) / Nagpur (Winter)",
+            "chief_minister": "Eknath Shinde",
+            "governor": "C. P. Radhakrishnan",
+            "high_court": "Bombay High Court (Mumbai)",
+            "state_animal": "Indian Giant Squirrel (Shekru)",
+            "state_bird": "Yellow-footed Green Pigeon (Hariyal)",
+            "folk_dances": ["Lavani", "Koli Dance", "Dhangari Gaja", "Tamasha", "Lezim"],
+            "festivals": ["Ganesh Chaturthi", "Gudi Padwa", "Ellora-Ajanta Festival", "Pola"],
+            "national_parks": ["Tadoba-Andhari National Park", "Sanjay Gandhi (Borivali) NP", "Navegaon NP", "Gugamal NP", "Chandoli NP", "Pench (Maharashtra) NP"],
+            "ramsar_sites": ["Nandur Madhameshwar", "Lonar Lake (Meteorite crater lake)", "Thane Creek Flamingo Sanctuary"],
+            "key_facts": "Financial capital of India (Mumbai, hosting RBI, SEBI, SBI, BSE, NSE). Lonar lake is an internationally renowned meteor impact basalt lake."
+        },
+        {
+            "name": "Odisha",
+            "type": "State",
+            "capital": "Bhubaneswar",
+            "chief_minister": "Mohan Charan Majhi",
+            "governor": "Raghubar Das",
+            "high_court": "Orissa High Court (Cuttack)",
+            "state_animal": "Sambar",
+            "state_bird": "Indian Roller",
+            "folk_dances": ["Odissi (Classical)", "Chhau (Mayurbhanj)", "Gotipua", "Sambalpuri Dance", "Ghumura"],
+            "festivals": ["Ratha Yatra (Puri)", "Nuakhai", "Raja Parba", "Konark Dance Festival"],
+            "national_parks": ["Simlipal National Park (Biosphere Reserve)", "Bhitarkanika National Park"],
+            "ramsar_sites": ["Chilika Lake (First Ramsar site in India, 1981)", "Bhitarkanika Mangroves", "Satkosia Gorge", "Tampara Lake", "Hirakud Reservoir", "Ansupa Lake"],
+            "key_facts": "Chilika Lake is Asia's largest brackish water lagoon and home to Irrawaddy dolphins. Bhitarkanika hosts largest population of saltwater crocodiles."
+        },
+        {
+            "name": "Punjab",
+            "type": "State",
+            "capital": "Chandigarh",
+            "chief_minister": "Bhagwant Mann",
+            "governor": "Gulab Chand Kataria",
+            "high_court": "Punjab and Haryana High Court (Chandigarh)",
+            "state_animal": "Blackbuck",
+            "state_bird": "Northern Goshawk (Baaj)",
+            "folk_dances": ["Bhangra", "Giddha", "Jhumar", "Kikli", "Sammi"],
+            "festivals": ["Baisakhi", "Lohri", "Hola Mohalla (Anandpur Sahib)", "Gurpurab"],
+            "national_parks": [],
+            "ramsar_sites": ["Harike Wetland (Confluence of Beas and Sutlej)", "Kanjli Wetland", "Ropar Wetland", "Keshopur-Miani Community Reserve", "Nangal Wildlife Sanctuary", "Beas Conservation Reserve (Indus River Dolphin)"],
+            "key_facts": "Land of Five Rivers. Golden Temple (Harmandir Sahib) in Amritsar. Harike Barrage feeds the Indira Gandhi Canal."
+        },
+        {
+            "name": "Rajasthan",
+            "type": "State",
+            "capital": "Jaipur",
+            "chief_minister": "Bhajan Lal Sharma",
+            "governor": "Haribhau Kisanrao Bagde",
+            "high_court": "Rajasthan High Court (Jodhpur)",
+            "state_animal": "Chinkara & Camel (State Heritage Animal)",
+            "state_bird": "Great Indian Bustard (Godawan - Critically Endangered)",
+            "folk_dances": ["Ghoomar", "Kalbelia (UNESCO Intangible Cultural Heritage)", "Chari", "Kachhi Ghodi", "Bhavai"],
+            "festivals": ["Pushkar Camel Fair", "Desert Festival (Jaisalmer)", "Teej", "Gangaur"],
+            "national_parks": ["Ranthambore National Park", "Keoladeo (Bharatpur) National Park", "Desert National Park", "Sariska National Park", "Mukundra Hills NP"],
+            "ramsar_sites": ["Keoladeo National Park (Montreux Record)", "Sambhar Lake (India's largest inland salt lake)"],
+            "key_facts": "Largest state by land area (10.4% of India). Home to Thar Desert. Kalbelia dance is inscribed on UNESCO Representative List of Intangible Heritage."
+        },
+        {
+            "name": "Tamil Nadu",
+            "type": "State",
+            "capital": "Chennai",
+            "chief_minister": "M. K. Stalin",
+            "governor": "R. N. Ravi",
+            "high_court": "Madras High Court (Chennai)",
+            "state_animal": "Nilgiri Tahr",
+            "state_bird": "Emerald Dove",
+            "folk_dances": ["Bharatanatyam (Classical)", "Karagattam", "Kavadi Aattam", "Mayil Attam", "Oyilattam"],
+            "festivals": ["Pongal (Jallikattu)", "Thaipusam", "Natyanjali Dance Festival (Chidambaram)", "Panguni Uthiram"],
+            "national_parks": ["Guindy National Park", "Gulf of Mannar Marine National Park", "Indira Gandhi (Anamalai) NP", "Mudumalai NP", "Mukurthi NP"],
+            "ramsar_sites": ["Point Calimere", "Karikili Bird Sanctuary", "Pallikaranai Marsh", "Pichavaram Mangrove", "Gulf of Mannar Marine Biosphere", "Koonthankulam", "Vembannur", "Vellode", "Vedanthangal", "Udhayamarthandapuram", "Chitrangudi", "Suchindram Theroor", "Vaduvur", "Kanjirankulam", "Longwood Shola", "Karaivetti"],
+            "key_facts": "Highest number of Ramsar sites in India (16 sites). Highest number of operational factories in India. Gulf of Mannar is first Marine Biosphere in South Asia."
+        },
+        {
+            "name": "Uttar Pradesh",
+            "type": "State",
+            "capital": "Lucknow",
+            "chief_minister": "Yogi Adityanath",
+            "governor": "Anandiben Patel",
+            "high_court": "Allahabad High Court (Prayagraj)",
+            "state_animal": "Swamp Deer (Barasingha)",
+            "state_bird": "Sarus Crane",
+            "folk_dances": ["Kathak (Classical)", "Charkula (Braj)", "Raslila", "Ramlila", "Nautanki", "Kajari"],
+            "festivals": ["Maha Kumbh Mela (Prayagraj)", "Taj Mahotsav (Agra)", "Dev Deepawali (Varanasi)", "Lathmar Holi (Barsana)"],
+            "national_parks": ["Dudhwa National Park"],
+            "ramsar_sites": ["Upper Ganga River", "Nawabganj Bird Sanctuary", "Parvati Arga", "Saman Bird Sanctuary", "Samaspur", "Sandi", "Sarsai Nawar", "Sur Sarovar (Keetham Lake)", "Haiderpur Wetland", "Bakhira Wildlife Sanctuary"],
+            "key_facts": "Most populous state of India (sends 80 Lok Sabha MPs). Dudhwa is the sole National Park. Prayagraj Kumbh Mela is UNESCO Intangible Cultural Heritage."
+        },
+        {
+            "name": "West Bengal",
+            "type": "State",
+            "capital": "Kolkata",
+            "chief_minister": "Mamata Banerjee",
+            "governor": "C. V. Ananda Bose",
+            "high_court": "Calcutta High Court (Oldest High Court in India, est. 1862)",
+            "state_animal": "Fishing Cat",
+            "state_bird": "White-throated Kingfisher",
+            "folk_dances": ["Chhau (Purulia)", "Baul dance & music", "Brita Dance", "Gambhira"],
+            "festivals": ["Durga Puja (UNESCO Intangible Cultural Heritage)", "Poush Mela (Shantiniketan)", "Ganga Sagar Mela"],
+            "national_parks": ["Sundarbans National Park (UNESCO WHS)", "Buxa National Park", "Gorumara NP", "Jaldapara NP", "Neora Valley NP", "Singalila NP"],
+            "ramsar_sites": ["East Kolkata Wetlands", "Sundarban Wetland (Largest Ramsar site in India, 4,230 sq km)"],
+            "key_facts": "Sundarbans is the world's largest mangrove forest and delta (Ganga-Brahmaputra). Durga Puja is inscribed on UNESCO Intangible Cultural Heritage list."
+        },
+        {
+            "name": "Jammu and Kashmir",
+            "type": "Union Territory",
+            "capital": "Srinagar (Summer) / Jammu (Winter)",
+            "chief_minister": "Omar Abdullah",
+            "governor": "Manoj Sinha (Lt. Governor)",
+            "high_court": "High Court of Jammu & Kashmir and Ladakh (Srinagar/Jammu)",
+            "state_animal": "Hangul (Kashmir Stag)",
+            "state_bird": "Kalij Pheasant",
+            "folk_dances": ["Rouf", "Hikat", "Kud Dance", "Dumhal"],
+            "festivals": ["Tulip Festival", "Shikara Festival", "Bahu Mela", "Hemis (Ladakh)"],
+            "national_parks": ["Dachigam National Park (sole home of Hangul)", "Kishtwar National Park", "Kazinaag National Park"],
+            "ramsar_sites": ["Wular Lake (One of Asia's largest freshwater lakes)", "Hokera Wetland", "Surinsar-Mansar Lakes", "Shallabugh Wetland", "Hygam Wetland"],
+            "key_facts": "Dachigam is the only habitat of the critically endangered Hangul stag. Wular lake formed by tectonic activity on Jhelum river."
+        },
+        {
+            "name": "Ladakh",
+            "type": "Union Territory",
+            "capital": "Leh (Summer) / Kargil (Winter)",
+            "chief_minister": "N/A (UT without legislature)",
+            "governor": "Brig. (Dr.) B. D. Mishra (Retd.) (Lt. Governor)",
+            "high_court": "High Court of Jammu & Kashmir and Ladakh",
+            "state_animal": "Snow Leopard",
+            "state_bird": "Black-necked Crane",
+            "folk_dances": ["Shondol Dance (Royal dance of Ladakh)", "Chham (Mask dance)", "Spao Dance"],
+            "festivals": ["Hemis Festival", "Losar", "Sindhu Darshan", "Dosmoche"],
+            "national_parks": ["Hemis National Park (Largest National Park in India, 4,400 sq km)"],
+            "ramsar_sites": ["Tso Moriri Lake", "Tso Kar Wetland Complex"],
+            "key_facts": "Hemis National Park is India's largest national park and highest altitude protected reserve. Umling La pass (19,024 ft) is world's highest motorable pass."
+        },
+        {
+            "name": "Delhi (NCT)",
+            "type": "Union Territory",
+            "capital": "New Delhi",
+            "chief_minister": "Atishi Marlena",
+            "governor": "Vinai Kumar Saxena (Lt. Governor)",
+            "high_court": "Delhi High Court (Only UT with its own independent High Court)",
+            "state_animal": "Nilgai",
+            "state_bird": "House Sparrow",
+            "folk_dances": ["Traditional fusion", "Qawwali"],
+            "festivals": ["Phool Walon Ki Sair", "Qutub Festival"],
+            "national_parks": ["Asola Bhatti Wildlife Sanctuary"],
+            "ramsar_sites": [],
+            "key_facts": "Article 239AA of Constitution grants special status to National Capital Territory of Delhi (69th Amendment Act 1991)."
+        }
+    ]
+}
+
+with open(os.path.join(static_dir, "indian-states.json"), "w", encoding="utf-8") as f:
+    json.dump(states_data, f, indent=2, ensure_ascii=False)
+
+# 3. National Parks & Wildlife Sanctuaries
+parks_data = {
+    "title": "Comprehensive Directory of National Parks, Tiger Reserves, and Ramsar Wetlands",
+    "total": 50,
+    "last_updated": "2026-09-13",
+    "records": [
+        {"name": "Jim Corbett National Park", "state": "Uttarakhand", "category": "National Park & Tiger Reserve", "key_species": "Bengal Tiger, Elephant, Leopard", "facts": "India's first National Park, established in 1936 as Hailey National Park. First park where Project Tiger was launched in 1973. Ramganga river flows through it."},
+        {"name": "Kaziranga National Park", "state": "Assam", "category": "National Park & UNESCO World Heritage Site", "key_species": "Great Indian One-horned Rhinoceros, Wild Water Buffalo, Swamp Deer", "facts": "Hosts two-thirds of the world's great one-horned rhinoceroses. Located along the floodplains of Brahmaputra River."},
+        {"name": "Gir National Park and Wildlife Sanctuary", "state": "Gujarat", "category": "National Park & Wildlife Sanctuary", "key_species": "Asiatic Lion (Panthera leo persica), Chital, Sambar", "facts": "The only natural wild habitat of the endangered Asiatic Lion in the entire world."},
+        {"name": "Ranthambore National Park", "state": "Rajasthan", "category": "National Park & Tiger Reserve", "key_species": "Royal Bengal Tiger, Leopard, Marsh Crocodile", "facts": "Bounded by Chambal River to the south and Banas River to the north. Famous for historic 10th-century Ranthambore Fort inside the park."},
+        {"name": "Sundarbans National Park", "state": "West Bengal", "category": "National Park, Biosphere Reserve & UNESCO World Heritage Site", "key_species": "Royal Bengal Tiger (swimming tigers), Estuarine Crocodile, Gangetic Dolphin", "facts": "World's largest mangrove ecosystem. Formed by confluence of Ganga, Brahmaputra, and Meghna rivers."},
+        {"name": "Hemis National Park", "state": "Ladakh", "category": "National Park", "key_species": "Snow Leopard, Tibetan Wolf, Bharal (Blue Sheep)", "facts": "India's largest national park (approx 4,400 sq km) and highest altitude protected area. Famous for highest density of snow leopards globally."},
+        {"name": "Keibul Lamjao National Park", "state": "Manipur", "category": "National Park", "key_species": "Sangai (Brow-antlered Dancing Deer of Manipur)", "facts": "The world's only floating national park, located on Loktak Lake with floating decomposed plant masses called 'phumdis'."},
+        {"name": "Kanha Tiger Reserve", "state": "Madhya Pradesh", "category": "National Park & Tiger Reserve", "key_species": "Hardground Barasingha (Swamp Deer), Royal Bengal Tiger, Dhole", "facts": "Inspiration for Rudyard Kipling's 'The Jungle Book'. First tiger reserve in India to introduce an official mascot: 'Bhoorsingh the Barasingha'."},
+        {"name": "Bandipur National Park", "state": "Karnataka", "category": "National Park & Tiger Reserve", "key_species": "Asian Elephant, Tiger, Gaur, Sloth Bear", "facts": "Part of the Nilgiri Biosphere Reserve (India's first biosphere reserve, est. 1986). Forms interstate corridor with Mudumalai (TN) and Wayanad (Kerala)."},
+        {"name": "Periyar National Park", "state": "Kerala", "category": "National Park & Tiger Reserve", "key_species": "Asian Elephant, Tiger, Lion-tailed Macaque", "facts": "Located in Cardamom and Pandalam hills of Western Ghats around Periyar Lake formed by Mullaperiyar Dam. Periyar and Pamba rivers originate here."},
+        {"name": "Silent Valley National Park", "state": "Kerala", "category": "National Park", "key_species": "Lion-tailed Macaque, Malabar Giant Squirrel", "facts": "Famous for the historic 'Save Silent Valley' movement against a proposed hydroelectric project on the Kunthipuzha River."},
+        {"name": "Kuno National Park", "state": "Madhya Pradesh", "category": "National Park", "key_species": "Cheetah (Acinonyx jubatus), Leopard, Chinkara", "facts": "Site of India's historic Cheetah Reintroduction Project ('Project Cheetah') launched in September 2022 with translocated African cheetahs."},
+        {"name": "Simlipal National Park", "state": "Odisha", "category": "National Park, Biosphere Reserve & Tiger Reserve", "key_species": "Royal Bengal Tiger (Melanistic / Black Tigers), Asian Elephant, Gaur", "facts": "Only known habitat in the world with wild melanistic (black) tigers with broad merged dark stripes."},
+        {"name": "Bhitarkanika National Park", "state": "Odisha", "category": "National Park & Ramsar Site", "key_species": "Saltwater Crocodile, Olive Ridley Sea Turtle, White Crocodile", "facts": "Second largest mangrove ecosystem in India. Gahirmatha Marine Sanctuary adjoining Bhitarkanika is the world's largest nesting beach for Olive Ridley turtles."},
+        {"name": "Keoladeo Ghana National Park", "state": "Rajasthan", "category": "National Park, Ramsar Site & UNESCO World Heritage Site", "key_species": "Siberian Crane (historical), Painted Stork, Migratory Waterfowl", "facts": "Formerly known as Bharatpur Bird Sanctuary. A man-made wetland listed under the Montreux Record of the Ramsar Convention."},
+        {"name": "Great Himalayan National Park", "state": "Himachal Pradesh", "category": "National Park & UNESCO World Heritage Site", "key_species": "Western Tragopan, Himalayan Musk Deer, Snow Leopard", "facts": "Inscribed as UNESCO Natural World Heritage Site in 2014 for outstanding biodiversity in the alpine zone."},
+        {"name": "Valley of Flowers National Park", "state": "Uttarakhand", "category": "National Park & UNESCO World Heritage Site", "key_species": "Asiatic Black Bear, Snow Leopard, Musk Deer, Alpine flora", "facts": "Located in the Chamoli district, famous for endemic alpine flower meadows. Discovered by Frank S. Smythe in 1931."},
+        {"name": "Namdapha National Park", "state": "Arunachal Pradesh", "category": "National Park & Tiger Reserve", "key_species": "Tiger, Leopard, Snow Leopard, Clouded Leopard", "facts": "Fourth largest national park in India. Only park hosting four feline species: Tiger, Common Leopard, Snow Leopard, and Clouded Leopard."},
+        {"name": "Dachigam National Park", "state": "Jammu & Kashmir", "category": "National Park", "key_species": "Hangul (Kashmir Stag - Cervus hanglu hanglu)", "facts": "Last remaining sanctuary of the critically endangered Kashmir Stag (Hangul). Located 22 km from Srinagar near Dal Lake catchment."},
+        {"name": "Manas National Park", "state": "Assam", "category": "National Park, Tiger Reserve & UNESCO World Heritage Site", "key_species": "Pygmy Hog, Golden Langur, Hispid Hare, Wild Water Buffalo", "facts": "Located at the foothills of Bhutan Himalayas on the Manas River. Home to rare and endemic pygmy hog and golden langur."}
+    ]
+}
+
+with open(os.path.join(static_dir, "national-parks-wildlife.json"), "w", encoding="utf-8") as f:
+    json.dump(parks_data, f, indent=2, ensure_ascii=False)
+
+# 4. International Organisations
+orgs_data = {
+    "title": "Comprehensive Directory of International Financial, Political, and Regulatory Bodies",
+    "total": 32,
+    "last_updated": "2026-09-13",
+    "records": [
+        {
+            "name": "International Monetary Fund (IMF)",
+            "abbreviation": "IMF",
+            "headquarters": "Washington, D.C., United States",
+            "established": 1944,
+            "current_head": "Kristalina Georgieva (Managing Director)",
+            "members": 190,
+            "key_reports": ["World Economic Outlook (WEO)", "Global Financial Stability Report (GFSR)", "Fiscal Monitor"],
+            "currency_basket": "Special Drawing Rights (SDR) basket: USD, EUR, CNY, JPY, GBP",
+            "exam_relevance": "High. Frequently tested on SDR basket currencies, WEO growth projections, and quota reforms."
+        },
+        {
+            "name": "World Bank Group",
+            "abbreviation": "WBG",
+            "headquarters": "Washington, D.C., United States",
+            "established": 1944,
+            "current_head": "Ajay Banga (President)",
+            "members": 189,
+            "key_reports": ["Global Economic Prospects", "World Development Report (WDR)", "Remittance Prices Worldwide"],
+            "arms": ["IBRD (Development Loans)", "IDA (Soft Loans)", "IFC (Private Sector Lending)", "MIGA (Political Risk Insurance)", "ICSID (Arbitration)"],
+            "exam_relevance": "Very High. Ajay Banga is the first Indian-American World Bank President."
+        },
+        {
+            "name": "Bank for International Settlements (BIS)",
+            "abbreviation": "BIS",
+            "headquarters": "Basel, Switzerland",
+            "established": 1930,
+            "current_head": "Agustin Carstens (General Manager)",
+            "members": "63 Central Banks (including RBI)",
+            "key_reports": ["BIS Annual Economic Report", "Triennial Central Bank Survey"],
+            "special_notes": "Known as the 'Central Bank of Central Banks'. Houses the Basel Committee on Banking Supervision (BCBS) which drafts Basel I, II, III capital norms.",
+            "exam_relevance": "High. Origin of CRAR, Capital Adequacy, Basel III framework."
+        },
+        {
+            "name": "Asian Development Bank (ADB)",
+            "abbreviation": "ADB",
+            "headquarters": "Mandaluyong (Manila), Philippines",
+            "established": 1966,
+            "current_head": "Masatsugu Asakawa (President)",
+            "members": "68 (49 from Asia-Pacific region)",
+            "key_reports": ["Asian Development Outlook (ADO)"],
+            "special_notes": "Japan and United States are the two largest shareholders, followed by China and India. India is one of the top sovereign borrowers.",
+            "exam_relevance": "High. Invariably asked in bank exams for project loan amounts to Indian states."
+        },
+        {
+            "name": "Asian Infrastructure Investment Bank (AIIB)",
+            "abbreviation": "AIIB",
+            "headquarters": "Beijing, China",
+            "established": 2016,
+            "current_head": "Jin Liqun (President)",
+            "members": 109,
+            "special_notes": "China is the largest shareholder (26.6% voting share), followed by India as the second-largest shareholder (7.6% voting share). Urjit Patel served as Vice President.",
+            "exam_relevance": "Very High. Second largest shareholder question is a classic PYQ."
+        },
+        {
+            "name": "New Development Bank (NDB / BRICS Bank)",
+            "abbreviation": "NDB",
+            "headquarters": "Shanghai, China",
+            "established": 2014,
+            "current_head": "Dilma Rousseff (President)",
+            "members": "BRICS nations + Bangladesh, UAE, Egypt, Algeria",
+            "special_notes": "Formed via the Fortaleza Declaration (6th BRICS Summit in Brazil). Initial authorized capital was $100 Billion. K.V. Kamath was its inaugural President.",
+            "exam_relevance": "Very High. K.V. Kamath, Fortaleza declaration, and new members are top recurring topics."
+        },
+        {
+            "name": "Financial Action Task Force (FATF)",
+            "abbreviation": "FATF",
+            "headquarters": "Paris, France",
+            "established": 1989,
+            "current_head": "Elisa de Anda Madrazo (President)",
+            "members": "40 (38 jurisdictions + 2 regional organisations: EU and GCC)",
+            "special_notes": "Global money laundering and terrorist financing watchdog founded by G7. Maintains 'Grey List' (Increased Monitoring) and 'Black List' (High-Risk Jurisdictions). India mutual evaluation adopted in 2024.",
+            "exam_relevance": "High. Tested on Grey/Black list classifications and Anti-Money Laundering (PMLA) linkage."
+        },
+        {
+            "name": "World Trade Organization (WTO)",
+            "abbreviation": "WTO",
+            "headquarters": "Geneva, Switzerland",
+            "established": 1995,
+            "current_head": "Ngozi Okonjo-Iweala (Director-General)",
+            "members": 166,
+            "key_reports": ["World Trade Report", "Global Trade Outlook"],
+            "special_notes": "Established on 1 Jan 1995 by the Marrakesh Agreement, replacing GATT (General Agreement on Tariffs and Trade 1947). Ngozi Okonjo-Iweala is the first woman and first African to head WTO.",
+            "exam_relevance": "High. Marrakesh agreement and Director-General identity are frequent PYQ targets."
+        },
+        {
+            "name": "World Economic Forum (WEF)",
+            "abbreviation": "WEF",
+            "headquarters": "Cologny-Geneva, Switzerland",
+            "established": 1971,
+            "current_head": "Klaus Schwab (Founder & Chairman) / Borge Brende (President)",
+            "key_reports": ["Global Gender Gap Report", "Global Competitiveness Report", "Global Risks Report", "Energy Transition Index", "Travel & Tourism Development Index"],
+            "special_notes": "Famous for its Annual Winter Meeting in Davos, Switzerland.",
+            "exam_relevance": "Very High. Reports published by WEF (Global Gender Gap, Global Risks) appear every year."
+        },
+        {
+            "name": "United Nations (UN)",
+            "abbreviation": "UN",
+            "headquarters": "New York City, United States",
+            "established": 1945,
+            "current_head": "Antonio Guterres (Secretary-General)",
+            "members": 193,
+            "special_notes": "UN Charter signed in San Francisco on 26 June 1945; entered into force on 24 October 1945 (United Nations Day celebrated on 24th Oct).",
+            "exam_relevance": "High. UN Day date, Secretary-General nationality (Portuguese), and 17 Sustainable Development Goals (SDGs 2015-2030)."
+        },
+        {
+            "name": "United Nations Educational, Scientific and Cultural Organization (UNESCO)",
+            "abbreviation": "UNESCO",
+            "headquarters": "Paris, France",
+            "established": 1945,
+            "current_head": "Audrey Azoulay (Director-General)",
+            "key_reports": ["Global Education Monitoring Report (GEM)"],
+            "special_notes": "Designates World Heritage Sites and Intangible Cultural Heritage. India has 42 World Heritage Sites (including Santiniketan and Sacred Ensembles of the Hoysalas).",
+            "exam_relevance": "High. Heritage site additions and Paris headquarters."
+        },
+        {
+            "name": "World Health Organization (WHO)",
+            "abbreviation": "WHO",
+            "headquarters": "Geneva, Switzerland",
+            "established": 1948,
+            "current_head": "Tedros Adhanom Ghebreyesus (Director-General)",
+            "special_notes": "Founded on 7 April 1948 (celebrated annually as World Health Day). WHO Global Centre for Traditional Medicine (GCTM) established in Jamnagar, Gujarat.",
+            "exam_relevance": "High. Jamnagar GCTM location and World Health Day (7 April)."
+        },
+        {
+            "name": "International Labour Organization (ILO)",
+            "abbreviation": "ILO",
+            "headquarters": "Geneva, Switzerland",
+            "established": 1919,
+            "current_head": "Gilbert Houngbo (Director-General)",
+            "key_reports": ["World Employment and Social Outlook (WESO)", "Global Wage Report"],
+            "special_notes": "Oldest UN specialized agency, created under Treaty of Versailles in 1919. Won Nobel Peace Prize in 1969.",
+            "exam_relevance": "High. Reports and foundation under Treaty of Versailles."
+        },
+        {
+            "name": "Organisation for Economic Co-operation and Development (OECD)",
+            "abbreviation": "OECD",
+            "headquarters": "Paris, France",
+            "established": 1961,
+            "current_head": "Mathias Cormann (Secretary-General)",
+            "members": 38,
+            "special_notes": "Promotes policies for economic growth and world trade. Formulates Base Erosion and Profit Shifting (BEPS) global minimum tax rules.",
+            "exam_relevance": "Medium. Paris HQ and BEPS framework."
+        },
+        {
+            "name": "United Nations Environment Programme (UNEP)",
+            "abbreviation": "UNEP",
+            "headquarters": "Nairobi, Kenya",
+            "established": 1972,
+            "current_head": "Inger Andersen (Executive Director)",
+            "key_reports": ["Emissions Gap Report", "Global Environment Outlook (GEO)", "Adaptation Gap Report"],
+            "special_notes": "Established following the 1972 Stockholm Conference on Human Environment. One of the few UN bodies headquartered in Africa.",
+            "exam_relevance": "High. Nairobi headquarters is a classic question; Emissions Gap Report publisher."
+        },
+        {
+            "name": "Association of Southeast Asian Nations (ASEAN)",
+            "abbreviation": "ASEAN",
+            "headquarters": "Jakarta, Indonesia",
+            "established": 1967,
+            "current_head": "Kao Kim Hourn (Secretary-General)",
+            "members": "10 Member States (Brunei, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, Vietnam; Timor-Leste admitted in principle)",
+            "special_notes": "Established by the Bangkok Declaration on 8 August 1967. India is a Strategic Comprehensive Partner.",
+            "exam_relevance": "High. Secretariat in Jakarta and member nations."
+        },
+        {
+            "name": "Shanghai Cooperation Organisation (SCO)",
+            "abbreviation": "SCO",
+            "headquarters": "Beijing, China",
+            "established": 2001,
+            "current_head": "Zhang Ming (Secretary-General)",
+            "members": "10 Member States (China, Russia, Kazakhstan, Kyrgyzstan, Tajikistan, Uzbekistan, India, Pakistan, Iran, Belarus)",
+            "special_notes": "India and Pakistan joined in 2017 (Astana Summit). Iran joined in 2023, Belarus in 2024. RATS (Regional Anti-Terrorist Structure) HQ is in Tashkent, Uzbekistan.",
+            "exam_relevance": "Very High. New members (Iran, Belarus) and RATS Tashkent HQ."
+        },
+        {
+            "name": "South Asian Association for Regional Cooperation (SAARC)",
+            "abbreviation": "SAARC",
+            "headquarters": "Kathmandu, Nepal",
+            "established": 1985,
+            "current_head": "Golam Sarwar (Secretary-General)",
+            "members": "8 Member States (Afghanistan, Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, Sri Lanka)",
+            "special_notes": "Founded in Dhaka on 8 December 1985 (SAARC Charter Day). SAARC Development Fund (SDF) HQ is in Thimphu, Bhutan.",
+            "exam_relevance": "High. Member count, 1985 Dhaka foundation, Kathmandu Secretariat."
+        },
+        {
+            "name": "Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation (BIMSTEC)",
+            "abbreviation": "BIMSTEC",
+            "headquarters": "Dhaka, Bangladesh",
+            "established": 1997,
+            "current_head": "Indra Mani Pandey (Secretary-General)",
+            "members": "7 Member States (Bangladesh, Bhutan, India, Myanmar, Nepal, Sri Lanka, Thailand)",
+            "special_notes": "Formed via Bangkok Declaration on 6 June 1997. Indra Mani Pandey is the first Indian diplomat to head BIMSTEC as Secretary-General.",
+            "exam_relevance": "Very High. Indra Mani Pandey appointment and Dhaka Secretariat."
+        }
+    ]
+}
+
+with open(os.path.join(static_dir, "international-organisations.json"), "w", encoding="utf-8") as f:
+    json.dump(orgs_data, f, indent=2, ensure_ascii=False)
+
+print("Static GK datasets generated successfully.")
