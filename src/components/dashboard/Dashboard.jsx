@@ -46,7 +46,7 @@ export default function Dashboard({
       {/* Top Banner: Exam Selector & Live Readiness */}
       <div className="bg-gradient-to-r from-ga-900 via-ga-800 to-bank-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
         {/* Subtle background glow */}
-        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-ga-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-ga-500/20 rounded-full blur-3xl pointer-events-none overflow-hidden"></div>
 
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-xl">
